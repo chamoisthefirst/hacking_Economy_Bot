@@ -1,4 +1,12 @@
 const buyAtOnce = "500";
+let botOwner = {
+  "id":"1089987702516088853"
+}
+let perms = {
+  dm:["1089987702516088853","592825756095348748"],
+  admin:["1089987702516088853","592825756095348748"],
+  owner:"1089987702516088853"
+}
 
 const {
   Client,
@@ -8,6 +16,7 @@ const {
   Permissions,
   Embed,
   AllowedMentionsTypes,
+  DirectMessages,
   DefaultWebSocketManagerOptions,
 } = require(`discord.js`);
 const { ActivityType } = require("discord.js");
@@ -26,64 +35,74 @@ const client = new Client({
   GatewayIntentBits.MessageContent,
   GatewayIntentBits.GuildMembers,
   GatewayIntentBits.GuildPresences,
+  GatewayIntentBits.DirectMessages,
+  GatewayIntentBits.DirectMessageTyping,
+  GatewayIntentBits.DirectMessageReactions
   ],
   
   
 });
 
+let xSuperProperties = '{"os":"iOS","browser":"Chrome","device":"","system_locale":"en-US","browser_user_agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36","browser_version":"129.0.0.0","os_version":"10","referrer":"","referring_domain":"","referrer_current":"https://discord.com/app/invite-with-guild-onboarding/6ehDXdmtft","referring_domain_current":"discord.com","release_channel":"stable","client_build_number":329965,"client_event_source":null}';
 async function sendAsUser(authorization,message){
+  let r;
   fetch("https://discord.com/api/v9/channels/1288230213913673844/messages", {
     "headers": {
       "accept": "*/*",
       "accept-language": "en-US,en;q=0.9",
       "authorization": authorization,
       "content-type": "application/json",
-      "priority": "u=1, i",
-      "sec-ch-ua": "\"Brave\";v=\"129\", \"Not=A?Brand\";v=\"8\", \"Chromium\";v=\"129\"",
-      "sec-ch-ua-mobile": "?0",
-      "sec-ch-ua-platform": "\"Windows\"",
-      "sec-fetch-dest": "empty",
-      "sec-fetch-mode": "cors",
-      "sec-fetch-site": "same-origin",
-      "sec-gpc": "1",
-      "x-debug-options": "bugReporterEnabled",
       "x-discord-locale": "en-US",
       "x-discord-timezone": "America/Chicago",
-      "x-super-properties": "eyJvcyI6IldpbmRvd3MiLCJicm93c2VyIjoiQ2hyb21lIiwiZGV2aWNlIjoiIiwic3lzdGVtX2xvY2FsZSI6ImVuLVVTIiwiYnJvd3Nlcl91c2VyX2FnZW50IjoiTW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEyOS4wLjAuMCBTYWZhcmkvNTM3LjM2IiwiYnJvd3Nlcl92ZXJzaW9uIjoiMTI5LjAuMC4wIiwib3NfdmVyc2lvbiI6IjEwIiwicmVmZXJyZXIiOiIiLCJyZWZlcnJpbmdfZG9tYWluIjoiIiwicmVmZXJyZXJfY3VycmVudCI6Imh0dHBzOi8vZGlzY29yZC5jb20vYXBwL2ludml0ZS13aXRoLWd1aWxkLW9uYm9hcmRpbmcvNmVoRFhkbXRmdCIsInJlZmVycmluZ19kb21haW5fY3VycmVudCI6ImRpc2NvcmQuY29tIiwicmVsZWFzZV9jaGFubmVsIjoic3RhYmxlIiwiY2xpZW50X2J1aWxkX251bWJlciI6MzI5OTY1LCJjbGllbnRfZXZlbnRfc291cmNlIjpudWxsfQ==",
-      "cookie": "__dcfduid=424ac2203b9b11ef92cd29b9b0259cb1; __sdcfduid=424ac2213b9b11ef92cd29b9b0259cb1e3db1903bd71d3388d7fd1b4b0ab6ae543ce8092d64bb95df06682dc2aa0828a; __cfruid=ca355380a7e849d83310b5edab3a470ebc0d29a0-1727116467; _cfuvid=h05r8ohIMs4jpTzPmam6DVEbFqvXyti2cZv1sg.E3L4-1727116467562-0.0.1.1-604800000; cf_clearance=ycCbmVlxnlzt2ieHyOPnRb_ew_6MgeP9RnEuReJASGI-1727221687-1.2.1.1-P1YPr0z6GhtpQGITEFWOYGdNQZgyju9UKT_ZyXbGn.uZKg8_vbE5ADTffim4CM92VzXhfcrZz6qD_s.rfOKKrXA0rTyL8mNbiC9VueI6eMM1cM_Kz8SZjFG7NakuuXwx.GGT95retAGHX_55_v_ZO6r2mD0g9kgGtn3c9PwAS7LsVz7rWHj52rgI3krJKDqOe_AiKttxJykoNhavMCCvG_GCX0viVaiZvO.XFFJPiQUD7N94rq4WxnjTL8ieW3VXuqNAqDtz1EzKRAr8k1KdqR1uRaRbzBzRt_SH32BJicXTHYRJg1_RFYo6IRPCx7VaxC8kUqAayHqUlxrV2Vf7gCEqy3gj28w0wygDvFHqwBSHsnawc7bo1DebGcKz5ZXw",
+      "x-super-properties": btoa(xSuperProperties),
       "Referer": CHANNELURL,
       "Referrer-Policy": "strict-origin-when-cross-origin"
     },
     "body": `{"mobile_network_type":"unknown","content":"${message}","nonce":"1288548774917963776","tts":false,"flags":0}`,
     "method": "POST"
   }).then((res)=>{
-    return res;
+    r = res;
+  }).catch((err)=>{
+    console.log(err)
   });
+  return r;
 }
 
-setInterval(()=>{
-  sendAsUser(ALT_USER_TOKEN,"$cost").then((res)=>{
-        let a;
-        res.json(a);
-        console.log(a);
-      });
-},300000);
+async function DM(userID,message){
+  let u;
+  client.users.fetch(userID).then((user)=>{
+    u = user;
+    user.send(message);
+  }).catch((err)=>{
+    console.log(err);
+  });
+  return u;
+}
+
 
 DefaultWebSocketManagerOptions.identifyProperties.browser = "Discord iOS";
 client.on("ready", async () => {
   console.log("The bot is online!");
   console.log(`This bot is in ${client.guilds.cache.size} servers.`);
+
+  client.users.fetch(botOwner.id).then((user)=>{
+    botOwner = user;
+  })
   client.user.setPresence({
     // status: "idle",
     activities: [
       {
         type: ActivityType.Custom,
         name: "custom",
-        state: "Cashing in that mulah 🤑",
+        state: " ",
       },
     ],
   });
 });
+
+let data = {
+
+}
 
   client.on("messageCreate", (message) => {
 
@@ -96,14 +115,54 @@ client.on("ready", async () => {
           case "Cost of Solana":
             let cost = embed.description.slice(60);
             cost = parseInt(cost);
+
+            if(!data[`${message.author.id}`]){
+              data[`${message.author.id}`] = {
+                "next":null,
+                "cash":null,
+                "bank":null,
+                "total":null,
+                "solanas":null
+              }
+            }else{
+              if(data[`${message.author.id}`].cash){
+                let id = `${message.author.id}`;
+                message.channel.send(`You can buy ${Math.floor(data[id].cash/cost)} Solanas and have ${data[id].solanas} Solanas to sell.`);
+              }
+            }
+
+            /*
             console.log(cost);
-            if(cost < 160){
+            if(cost < 161){
               sendAsUser(USER_TOKEN,`$buy ${buyAtOnce}`);
               console.log(`Bought ${buyAtOnce} Solanas for a total of $${buyAtOnce*cost}`);
-            }else if(cost > 169){
+            }else if(cost > 160){
               sendAsUser(USER_TOKEN,`$sell ${buyAtOnce}`);
               console.log(`sold ${buyAtOnce} Solanas for a total of $${buyAtOnce*cost}`);
             }
+              */
+            break;
+            case "Balance":
+              let cash = embed.fields[1].value.slice(32,embed.fields[1].value.length-2);
+              let bank = embed.fields[0].value.slice(32,embed.fields[0].value.length-2);
+              let solanas = embed.fields[3].value.slice(32,embed.fields[3].value.length-2);
+              let total = cash+bank;
+              console.log(cash);
+              if(!data[`${message.author.id}`]){
+                data[`${message.author.id}`]={
+                  "next":null,
+                  "cash":cash,
+                  "bank":bank,
+                  "total":total,
+                  "solanas":solanas
+                }
+              }else{
+                data[`${message.author.id}`].next = null;
+                data[`${message.author.id}`].cash = cash;
+                data[`${message.author.id}`].bank = bank;
+                data[`${message.author.id}`].total = total;
+                data[`${message.author.id}`].solanas = solanas
+              }
             break;
             default:
               console.log(embed.title);
@@ -112,6 +171,58 @@ client.on("ready", async () => {
         return;
       }
     }
+
+    if(!message.content.startsWith(prefix) || message.bot) return;
+
+    const args = message.content.slice(prefix.length).split(/ +/);
+    const command = args.shift().toLowerCase();
+
+    const messageArray = message.content.split(" ");
+    const argument = messageArray.slice(1);
+    const cmd = messageArray[0];
+
+
+    if(command === "ping"){
+      message.channel.send("pong!");
+    }
+
+    if(perms[`${command}`]){
+      if(!perms[`${command}`].includes(message.author.id)){
+        DM(message.author.id,`Sorry, you do not have permission to use ${prefix}${command}`);
+        return;
+      }
+      if(command === "dm"){
+        let id = args[0]
+        if(id.startsWith("<@")){
+          id = id.slice(2,id.length-1);
+        }
+        let msg = args.slice(1).join(" ");
+        
+        DM(id,`${msg}\n\n-# sent by ${message.author.username}(#${message.author.id})\n-# if spam report to ${botOwner.username}(#${botOwner.id})`);
+      }
+
+      if(command === "admin"){
+
+        if(args[0] === "members"){
+          let admins = [];
+          for(var i = 0; i < perms.admin.length; i++){
+            client.users.fetch(perms.admin[i]).then((user)=>{
+              admins.push(`${user.username}(${user.id})`);
+            })
+          }
+          console.log(admins);
+          client.users.fetch(message.author.id).then((user)=>{
+            user.send(`My admins are as follows:\n${admins.join(",\n")}`)
+          });
+        }
+      }
+
+
+
+    }
+    
+    
+    
 
   });
 
